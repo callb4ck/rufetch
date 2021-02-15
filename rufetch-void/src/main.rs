@@ -46,7 +46,13 @@ fn main() {
     let uptime = cmd!("uptime", "-p").chars().skip(3).collect::<String>();
     let packages = cmd!("xbps-query", "-l").matches("\n").count();
     let shell = cmd!("basename", env::var("SHELL").unwrap());
-    let wm = env::var("WM").unwrap();
+    let raw_wm = env::var("WM");
+    let wm: String;
+
+    match raw_wm {
+        Ok(v) => {wm = v},
+        _ => { wm = String::new() }
+    }
 
 
     print!(
