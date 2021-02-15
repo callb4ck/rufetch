@@ -38,6 +38,15 @@ macro_rules! cmd {
     }
 }
 
+fn evar(var: &str) -> String {
+    let raw_var = env::var(var);
+    
+    match raw_var {
+        Ok(v) => return v,
+        _ => String::new()
+    }
+}
+
 fn main() {
     let user = cmd!("whoami");
     let host = cmd!("hostname");
@@ -45,16 +54,8 @@ fn main() {
     let kernel = cmd!("uname", "-sr");
     let uptime = cmd!("uptime", "-p").chars().skip(3).collect::<String>();
     let packages = cmd!("dpkg", "--get-selections").matches("\n").count();
-    let shell = cmd!("basename", env::var("SHELL").unwrap());
-    let raw_wm = env::var("WM");
-    let wm: String;
-
-    match raw_wm {
-        Ok(v) => {wm = v},
-        _ => { wm = String::new() }
-    }
-
-
+    let shell = cmd!("basename", evar("SHELL"));
+    let wm = evar("WM");
 
     print!(
 "           {}_      {}{}{}@{}{}
