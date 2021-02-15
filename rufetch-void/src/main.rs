@@ -26,7 +26,7 @@ macro_rules! cmd {
 
 fn main() {
     let user = cmd!("whoami");
-    let host = cmd!("cat", "/etc/hostname");
+    let host = cmd!("hostname");
     let osname = "Void";
     let kernel = cmd!("uname", "-sr");
     let uptime = cmd!("uptime", "-p").chars().skip(3).collect::<String>();
