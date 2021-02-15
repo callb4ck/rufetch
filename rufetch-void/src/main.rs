@@ -38,12 +38,12 @@ macro_rules! cmd {
     }
 }
 
-fn evar(var: &str) -> String {
-    let raw_var = env::var(var);
-    
-    match raw_var {
-        Ok(v) => return v,
-        _ => String::new()
+macro_rules! evar {
+    ($var:expr) => {
+        match env::var($var) {
+            Ok(v) => v,
+            _ => String::new()
+        }
     }
 }
 
@@ -54,8 +54,8 @@ fn main() {
     let kernel = cmd!("uname", "-sr");
     let uptime = cmd!("uptime", "-p").chars().skip(3).collect::<String>();
     let packages = cmd!("xbps-query", "-l").matches("\n").count();
-    let shell = cmd!("basename", evar("SHELL"));
-    let wm = evar("WM");
+    let shell = cmd!("basename", evar!("SHELL"));
+    let wm = evar!("WM");
 
     print!(
 "      {}_______      {}{}{}@{}{}
@@ -74,9 +74,6 @@ fn main() {
         C1, C2, C1, FONT1, RESET, packages,
         C1, FONT1, RESET, shell,
         C1, FONT1, RESET, wm, RESET)
-
-
-
 
 }
 
