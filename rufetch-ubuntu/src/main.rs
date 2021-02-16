@@ -45,12 +45,15 @@ fn main() {
     let kernel = cmd!("uname", "-sr");
     let uptime = cmd!("uptime", "-p").chars().skip(3).collect::<String>();
     let packages = cmd!("dpkg", "--get-selections").matches("\n").count();
-    let shell = cmd!("basename", env::var("SHELL")
-        .unwrap_or_else(|_| String::new()));
-    let wm = env::var("WM").
-        unwrap_or_else(|_| String::new());
+    let shell = cmd!(
+        "basename",
+        env::var("SHELL").unwrap_or_else(|_| String::new())
+    );
+    let wm = env::var("WM").unwrap_or_else(|_| String::new());
 
-    print!(
+    #[rustfmt::skip]
+    {
+        print!(
 "           {}_      {}{}{}@{}{}
      ,----{}(_)     OS:{}        {}
    {}_{}/  ---  \\     {}KERNEL:{}    {}
@@ -66,8 +69,8 @@ C1, C2, FONT1, RESET, kernel,
 C1, C2, FONT1, RESET, uptime,
 C2, C1, C2, FONT1, RESET, packages,
 C2, C1, FONT1, RESET, shell,
-FONT1, RESET, wm) 
-
+FONT1, RESET, wm);
+    };
 }
 
 
