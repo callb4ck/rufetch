@@ -40,7 +40,13 @@ macro_rules! cmd {
 
 fn main() {
     let user = cmd!("whoami");
-    let host = cmd!("hostname");
+
+    let host = std::fs::read_to_string("/etc/hostname")
+        .unwrap_or(String::from(""))
+        .strip_suffix('\n')
+        .unwrap_or("")
+        .to_string();
+
     let osname = "Ubuntu";
     let kernel = cmd!("uname", "-sr");
     let uptime = cmd!("uptime", "-p").chars().skip(3).collect::<String>();

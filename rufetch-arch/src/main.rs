@@ -1,6 +1,5 @@
-use std::process::Command;
 use std::env;
-
+use std::process::Command;
 
 // __--COLORS--__
 
@@ -40,7 +39,13 @@ macro_rules! cmd {
 
 fn main() {
     let user = cmd!("whoami");
-    let host = cmd!("hostname");
+
+    let host = std::fs::read_to_string("/etc/hostname")
+        .unwrap_or(String::from(""))
+        .strip_suffix('\n')
+        .unwrap_or("")
+        .to_string();
+
     let osname = "Arch";
     let kernel = cmd!("uname", "-sr");
     let uptime = cmd!("uptime", "-p").chars().skip(3).collect::<String>();
@@ -54,13 +59,13 @@ fn main() {
     #[rustfmt::skip]
     {
         println!(
-"{}       /\\         {}{}{}@{}{}
-{}      /  \\        {}OS:{}        {}
-{}     /\\   \\       {}KERNEL:{}    {}
-{}    /   {}   \\      {}UPTIME:{}    {}
-{}   /   ,,   \\     {}PACKAGES:{}  {}
-{}  /   |  |  -\\    {}SHELL:{}     {}
-{} /_-''    ''-_\\   {}WM:{}        {}
+r"{}       /\         {}{}{}@{}{}
+{}      /  \        {}OS:{}        {}
+{}     /\   \       {}KERNEL:{}    {}
+{}    /   {}   \      {}UPTIME:{}    {}
+{}   /   ,,   \     {}PACKAGES:{}  {}
+{}  /   |  |  -\    {}SHELL:{}     {}
+{} /_-''    ''-_\   {}WM:{}        {}
 {}",
 C1, FONT2, user, FONT1, FONT2, host,
 C1, FONT1, RESET, osname,
@@ -71,5 +76,4 @@ C2, FONT1, RESET, shell,
 C2, FONT1, RESET, wm,
 RESET)
     };
-
 }
