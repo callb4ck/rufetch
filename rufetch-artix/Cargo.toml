@@ -1,5 +1,5 @@
 [package]
-name = "rufetch-arch"
+name = "rufetch-artix"
 version = "0.1.0"
 authors = ["sec"]
 edition = "2018"
