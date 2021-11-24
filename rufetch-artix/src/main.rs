@@ -46,7 +46,7 @@ fn main() {
         .unwrap_or("")
         .to_string();
 
-    let osname = "Arch";
+    let osname = "Artix";
     let kernel = cmd!("uname", "-sr");
     let uptime = cmd!("uptime", "-p").chars().skip(3).collect::<String>();
     let packages = cmd!("pacman", "-Q").matches("\n").count()+1;
